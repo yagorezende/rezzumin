@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rezzumin</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/main.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="#">Documentação</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div style="padding: 38px 0;">
+            <h2 class="text-center">Rezzumin</h2>
+            <h5 class="text-center">Ferramenta para resumo de artigos acadêmicos e textos em geral</h5>
+        </div>
+
+        <section id="upload-pdf">
+            <h6 class="text-left">Upload PDF</h6>
+            <div>
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="file" id="pdf-file" name="pdf-file" hidden/>
+                <div id="pdf-spinner" class="spinner-border text-warning" role="status" style="display: none">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <div id="upload-btn">
+                  <button class="btn btn-default" id="upload-pdf-btn">
+                    <img src="{% static 'dashboard/images/upload-icon.png' %}" width="135" />
+                  </button>
+                  <small class="form-text text-muted">Carregue um aquivo .pdf para fazer o resumo.</small>
+                  <div class="slidecontainer">
+                    <input type="range" min="1" max="100" value="75" class="slider" id="file-coverage-slider">
+                    <small class="form-text text-muted" id="file-coverage-output"></small>
+                  </div>
+                </div>
+              </div>
+
+              <button id="pdf-upload-submit" class="btn btn-outline-dark">Submit</button>
+            </div>
+        </section>
+
+    </div>
+
+
+
+{#    <nav class="navbar fixed-bottom navbar-dark bg-dark">#}
+{#        <a class="navbar-brand" href="#">Fixed bottom</a>#}
+{#    </nav>#}
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'dashboard/js/main.js' %}"></script>
+
+</body>
+</html>
