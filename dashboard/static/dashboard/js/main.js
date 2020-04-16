@@ -19,7 +19,7 @@ $(document).ready(function () {
         console.log("Here!");
 
         jQuery.ajax({
-            url: '/result',
+            url: '/process',
             type: 'post',
             enctype: 'multipart/form-data',
             data: formData,

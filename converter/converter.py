@@ -30,11 +30,11 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import PCA, TruncatedSVD
-from sklearn.cluster import KMeans,DBSCAN
+from sklearn.cluster import KMeans, DBSCAN
 from sklearn_extra.cluster import KMedoids
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import normalize
-from scipy.stats import ttest_1samp,ttest_ind, ttest_rel, norm, pearsonr
+from scipy.stats import ttest_1samp, ttest_ind, ttest_rel, norm, pearsonr
  
 def pdf_txt_converter(filename,outputFile='article.txt'):
 
