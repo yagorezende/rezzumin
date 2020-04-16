@@ -27,7 +27,11 @@ $(document).ready(function () {
             processData: false,
             success: function(response){
                 if(response !== 0){
-                   alert('file uploaded');
+                    console.log(response)
+                    // answer = jQuery.parseJSON(response);
+                    if(response.result != null){
+                        window.location.replace("/result?id="+response.result);
+                    }
                 }
                 else{
                     alert('file not uploaded');
