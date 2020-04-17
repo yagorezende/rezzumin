@@ -3,36 +3,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rezzumin</title>
+    <title>Rezzumin | Resumo</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'dashboard/css/main.css' %}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+    <nav class="navbar  navbar-expand-lg sticky-top navbar-dark bg-dark">
         <div class="navbar-nav">
             <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+             <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Resumir</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/#upload-pdf">Resumir PDF</a>
+                  <a class="dropdown-item" href="/#upload-text">Resumir Texto</a>
+                </div>
+              </li>
+            <a class="nav-item nav-link" href="/#tutorial">Tutorial</a>
             <a class="nav-item nav-link" href="#">Documentação</a>
+            <a class="nav-item nav-link" target="_blank" href="https://www.midiacom.uff.br">Midiacom</a>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid min-vh-100" >
         <div style="padding: 38px 0;">
-            <h2 class="text-center">Rezzumin</h2>
-            <h5 class="text-center">Ferramenta para resumo de artigos acadêmicos e textos em geral</h5>
+            <h1 class="text-center light-text">Rezzumin</h1>
+            <h5 class="text-center light-text">Seu resumo está pronto!</h5>
         </div>
-        <div class="container">
-            <p class="text-justify">{{ abstract }}</p>
+        <div class="container bg-light">
+            <p id="abstract-content" class="lead mb-4 text-justify">{{ abstract }}</p>
+            <p class="text-right">
+                <button class="btn mb-2" onclick="copyToClipboard()">Copy text</button>
+            </p>
         </div>
-{#        <div class="container">#}
-{#            <p class="text-center">#}
-{#                <embed src="https://drive.google.com/viewerng/viewer?embedded=true&url=http://example.com/the.pdf" width="500" height="375">#}
-{#            </p>#}
-{#        </div>#}
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <div class="jumbotron jumbotron-fluid bg-dark" style="margin: auto 0 0 0;"                                    >
+      <div class="container">
+        <h1 class=" text-center light-text">Rezzumin</h1>
+          <p class=" text-center text-black-50">Universidade Federal Fluminense Laboratório Midiacom.</p>
+          <p class=" text-center text-black-50">
+              <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" />
+              </a><br />Este trabalho está licenciado sob a <br/>
+              <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional
+              </a>.
+          </p>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-{#    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>#}
+    <script src="{% static 'dashboard/js/main.js' %}"></script>
 </body>
 </html>

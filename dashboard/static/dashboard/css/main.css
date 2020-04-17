@@ -24,6 +24,20 @@ visibility: hidden;
   background-color: #9E9E9E;
 }
 
+#go-top-btn{
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 22px; /* Place the button at the bottom of the page */
+  right: 0; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  padding: 12px; /* Some padding */
+  font-size: 18px; /* Increase font size */
+}
+
+#go-top-btn:hover{
+  background-color: #555; /* Add a dark-grey background on hover */
+}
+
 .light-text{
   color: whitesmoke;
 }
@@ -46,7 +60,7 @@ visibility: hidden;
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #C8982A;
+  background: #007bff;
   cursor: pointer;
 }
 
@@ -54,6 +68,6 @@ visibility: hidden;
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #C8982A;
+  background: #007bff;
   cursor: pointer;
 }

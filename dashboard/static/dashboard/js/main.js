@@ -1,3 +1,27 @@
+let PHRASES = [
+    "Fabricando Infra-estrutura Imaginária",
+    "Reverificando Almas",
+    "Classificando Efeitos de Feitiços",
+    "Verificando Almas",
+    "Inserindo Gerador de Caos",
+    "Escavando Terreno Local",
+    "Garantindo a Sinergia Transplanar",
+    "Recalculando Matriz Mamífera",
+    "Compilando Almas Verificadas",
+    "Compondo Eufonia Melódica"
+]
+
+let COLORS = [
+    "text-primary",
+    "text-secondary",
+    "text-success",
+    "text-primary",
+    "text-danger",
+    "text-warning",
+    "text-info",
+    "text-light",
+]
+
 $(document).ready(function () {
     $('#pdf-spinner').hide();
     $('#progress-bar-wrapper').hide();
@@ -9,12 +33,13 @@ $(document).ready(function () {
             $('#upload-file-footer').html("arquivo: "+file.name+" não é um pdf válido!");
             $('#pdf-upload-submit').addClass("btn-outline-danger");
             $('#pdf-upload-submit').addClass("disabled");
-
+            $('#pdf-upload-submit').click(null);
 
         }else{
             $('#pdf-upload-submit').removeClass("btn-outline-danger");
             $('#pdf-upload-submit').removeClass("disabled");
             $('#upload-file-footer').html("arquivo: "+file.name);
+            addUploadPdfAction();
         }
         console.log(file);
     });
@@ -26,12 +51,22 @@ $(document).ready(function () {
     });
 });
 
+function copyToClipboard() {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($("#abstract-content").text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    alert("Resumo copiado!");
+}
+
 function addUploadPdfAction() {
     $('#pdf-upload-submit').click(function () {
         $('#pdf-spinner').show("fast");
         $('#progress-bar-wrapper').show("fast");
         $('#upload-btn').hide("slow");
-
+        $('#pdf-upload-submit').hide("slow");
 
         var rid = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
 
@@ -74,7 +109,17 @@ function timeout(ms) {
 
 async function getStatus(id) {
     i = 0;
+    var oldColor = "text-warning";
+
     while(i < 100){
+        var phrase = PHRASES[Math.floor(Math.random() * PHRASES.length)];
+        var newColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+        $("#progress-bar-label").html(phrase);
+        $("#pdf-spinner").removeClass(oldColor);
+        $("#pdf-spinner").addClass(newColor);
+        oldColor = newColor;
+
         await timeout(10000);
 
         jQuery.ajax({
@@ -108,4 +153,24 @@ function setSliderListener() {
     $(document).on('change', '#file-coverage-slider', function() {
         $('#file-coverage-output').html( $(this).val() + "%");
     });
+}
+
+//Get the button:
+mybutton = document.getElementById("go-top-btn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
