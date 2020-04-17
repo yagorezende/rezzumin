@@ -19,7 +19,7 @@
                 </div>
               </li>
             <a class="nav-item nav-link" href="#tutorial">Tutorial</a>
-            <a class="nav-item nav-link" href="#">Documentação</a>
+            <a class="nav-item nav-link" target="_blank" href="https://github.com/diogoferrazani/rezzumin">Documentação</a>
             <a class="nav-item nav-link" target="_blank" href="https://www.midiacom.uff.br">Midiacom</a>
         </div>
     </nav>
@@ -56,7 +56,24 @@
     </div>
 
     <section id="tutorial">
+        <div class="pt-lg-5 pb-lg-5">
+            <h1 class="text-center mt-5 mb-3 text-light">Vídeo Demonstrativo</h1>
+            <h5 class="text-center mb-4 text-light">Entenda melhor o funcionamento do nosso trabalho com um vídeo demonstrativo</h5>
+            <div class="dropdown-divider m-auto w-25"></div>
+        </div>
+
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+        </div>
+
         <div class="container-fluid">
+            <div class="dropdown-divider mb-lg-5 mt-lg-5"></div>
+            <div class="pt-lg-5 pb-lg-5">
+                <h1 class="text-center mb-3 text-light">Conheça Nossas Funcionalidades</h1>
+                <h5 class="text-center mb-4 text-light">Artigo, PDF ou texto livre, veja abaixo as diferentes formas de produzir um resumo com Rezzumin.</h5>
+                <div class="dropdown-divider m-auto w-25"></div>
+            </div>
+
             <div class="row">
                 <div class="col-4">
                     <div class="card h-100" style="width: 18rem; margin: 0 auto;">
@@ -90,31 +107,24 @@
                 </div>
             </div>
         </div>
-
-        <div class="pt-lg-5 pb-lg-5">
-            <div class="dropdown-divider"></div>
-            <h1 class="text-center mt-5 mb-3 text-light">Vídeo Demonstrativo</h1>
-            <h5 class="text-center mb-4 text-light">Entenda melhor o funcionamento do nosso trabalho com o vídeo abaixo</h5>
-            <div class="dropdown-divider m-auto w-25"></div>
-        </div>
-
-        <div class="embed-responsive embed-responsive-16by9">
-          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
-        </div>
-
-
-
     </section>
 
      <section id="upload-pdf">
-        <div class="container">
-            <div style="padding: 38px 0;">
+         <div class="dropdown-divider mb-lg-5 mt-lg-5"></div>
+{#        <div class="container">#}
+{#            <div style="padding: 38px 0;">#}
+{#                <h1 class="text-center mb-3 text-light">Resumir PDF</h1>#}
+{#                <h5 class="text-center mb-4 text-light">Carreque um arquivo PDF para que possa ser feito o resumo</h5>#}
+{#                <div class="dropdown-divider"></div>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="container-fluid mt-4">
+            <div class="pt-lg-5 pb-lg-5">
                 <h1 class="text-center mb-3 text-light">Resumir PDF</h1>
                 <h5 class="text-center mb-4 text-light">Carreque um arquivo PDF para que possa ser feito o resumo</h5>
-                <div class="dropdown-divider"></div>
+                <div class="dropdown-divider m-auto w-25"></div>
             </div>
-        </div>
-        <div class="container mt-4">
+
             <div class="text-center" style="margin: 0 30%;">
               {% csrf_token %}
               <div class="form-group">
@@ -127,9 +137,11 @@
                     <img src="{% static 'dashboard/images/upload-icon-light.png' %}" class="h-100" />
                   </button>
                   <small id="upload-file-footer" class="form-text mb-2 text-light">Carregue um aquivo .pdf para fazer o resumo.</small>
+
                   <div class="slidecontainer">
                     <input type="range" min="1" max="100" value="15" class="slider" id="file-coverage-slider">
-                    <small class="form-text text-muted" id="file-coverage-output"></small>
+                      <small class="form-text mb-2 text-light">Selecione a porcentagem do texto presente no resumo.</small>
+                    <small class="form-text text-muted" id="file-coverage-output">15%</small>
                   </div>
                     <div class="custom-control custom-checkbox">
                       <input type="checkbox" class="custom-control-input" id="customCheck1">
@@ -140,7 +152,7 @@
               </div>
 
             <p class="form-text text-muted" id="progress-bar-label"></p>
-            <div class="progress" id="progress-bar-wrapper" style="margin: 22px 0;">
+            <div class="progress" id="progress-bar-wrapper" style="margin: 22px 0; display: none">
                 <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0;">0%</div>
             </div>
 
