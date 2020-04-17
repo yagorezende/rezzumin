@@ -7,6 +7,7 @@ import os
 import re
 import nltk
 import string
+import operator
 import PyPDF2
 import textract
 import random
@@ -52,6 +53,7 @@ def pdf_txt_converter(file_request: ConvertRequest):
 
 	os.popen("pdftoppm "+filename+" " + outputPath +" -png").read()
 	pages = int(os.popen("ls "+outputPath+"* | wc -l").read())
+	step = 30 / pages
 
 	texto = ""
 
@@ -60,24 +62,12 @@ def pdf_txt_converter(file_request: ConvertRequest):
 		else: p = str(i)
 		os.popen("tesseract "+ outputPath+"-"+p+".png "+file_request.path+"/texto-"+output+"-"+p+" -l por").read()
 		texto += open(file_request.path+"/texto-"+output+"-"+p+".txt").read()
+		file_request.incrementStatus(step)
 
 	os.popen("rm -rf "+outputPath+"*").read()
 	os.popen("rm -rf "+file_request.path+"/texto-"+output+"-*").read()
 	open(outputFile, "w").write(texto)
 	return texto
-
-	'''
-	resumo = texto.find ("Resumo.")
-	abstract = texto.find("Abstract.")
-	intro = texto.find("1. Introdu")
-
-	if abstract != -1 and resumo > abstract:
-		texto_resumo = texto[resumo:intro]
-	else:
-		texto_resumo = texto[resumo:abstract]
-	 
-	print (texto_resumo)
-	'''
 
 def text_reading(file_request: ConvertRequest):
 	print("text_reading...")
@@ -103,13 +93,14 @@ def text_reading(file_request: ConvertRequest):
 	csvFile = open(file_request.path+"/database.csv", 'w' ,encoding='utf-8')
 	database.to_csv(csvFile, mode='w', columns=COLS, index=False, encoding="utf-8")
 
-def remove_punctuation(word):
 
+def remove_punctuation(word):
 	for ch in string.punctuation:
 		word = word.replace(ch, "")
 	if(len(word) < 2 or word.isdigit()):
 		return ""
 	return word
+
 
 def similarity(word, names):
 	try:
@@ -120,9 +111,10 @@ def similarity(word, names):
 		pass
 	return False
 
-def get_name_dict(file_request: ConvertRequest):
+
+def get_name_dict(root_path):
 	print("get_name_dict...")
-	names = open("{}/names.txt".format(file_request.path, file_request.id), encoding="utf-8")
+	names = open("{}/names.txt".format(root_path), encoding="utf-8")
 	names_lines = names.readlines()
 	names_dict = {}
 	for lines in names_lines:
@@ -134,20 +126,20 @@ def get_name_dict(file_request: ConvertRequest):
 def position_weighted_metric(root_path):
 	print("position_weighted_metric...")
 	df = pd.read_csv(root_path+"/cleaned_database.csv", header=0)
-	tfidf_vectorizer = TfidfVectorizer(ngram_range=(1,1))
-	count_vectorizer = CountVectorizer(ngram_range=(1,1))
-	tfidf_matrix=tfidf_vectorizer.fit_transform(df["Cleaned_Sentences"].values.astype('U')).todense()
-	count_matrix=count_vectorizer.fit_transform(df["Cleaned_Sentences"].values.astype('U')).todense()
+	tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 1))
+	count_vectorizer = CountVectorizer(ngram_range=(1, 1))
+	tfidf_matrix = tfidf_vectorizer.fit_transform(df["Cleaned_Sentences"].values.astype('U')).todense()
+	count_matrix = count_vectorizer.fit_transform(df["Cleaned_Sentences"].values.astype('U')).todense()
 	'''Assume general form: (A,B) C
 	A: Document index 
 	B: Specific word-vector index 
 	C: TFIDF score for word B in document A'''
-	position_measures=[]
+	position_measures = []
 	for row in range(len(tfidf_matrix)):
-		position_measures.append(1-((row)/len(tfidf_matrix)))
+		position_measures.append(1 - ((row) / len(tfidf_matrix)))
 	df['Position'] = position_measures
 
-	COLS = ['Sentences', 'Cleaned_Sentences','Position']
+	COLS = ['Sentences', 'Cleaned_Sentences', 'Position']
 	csvFile = open(root_path+"/cleaned_database.csv", 'w' ,encoding='utf-8')
 	df.to_csv(csvFile, mode='w', columns=COLS, index=False, encoding="utf-8")
 
@@ -265,58 +257,91 @@ def brush_path(root_path):
 	csvFile = open(root_path+"/cleaned_database.csv", 'w' ,encoding='utf-8')
 	df.to_csv(csvFile, mode='w', columns=COLS, index=False, encoding="utf-8")
 
-def k_medoids_method(root_path):
-	print("k_medoids_method...")
-	#X = np.asarray([[1, 2], [1, 4], [1, 0],[4, 2], [4, 4], [4, 0]])
-	database = pd.read_csv(root_path+"/cleaned_database.csv",header=0)
+def graph_methodology(root_path):
+	df = pd.read_csv(root_path+"/cleaned_database.csv", header=0)
+	tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 1))
+	COLS = list(df.columns)
+	tfidf_matrix = tfidf_vectorizer.fit_transform(df["Cleaned_Sentences"].values.astype('U')).todense()
+
+	G = nx.Graph()
+	G.add_nodes_from(df.index)
+
+	for index in range(len(tfidf_matrix)):
+		cosine = 0
+		for row in range(len(tfidf_matrix)):
+			cosine = cosine_similarity(tfidf_matrix[index], tfidf_matrix[row])
+			cosine = float(str(cosine).replace(']]', '').replace('[[', ''))
+			# if index == 4:
+			# print(cosine)
+
+			if (cosine >= 0.1) and (cosine != 1.0):
+				G.add_weighted_edges_from([(index, row, cosine)])
+
+	# pos = nx.spring_layout(G)
+	pos = nx.fruchterman_reingold_layout(G)
+	labels = nx.get_edge_attributes(G, 'weight')
+	# pos = nx.circular_layout(G)
+	# pos = nx.shell_layout(G)
+
+	nx.draw(G, pos, with_labels=True, font_weight='bold')
+	# plt.show()
+
+	betweenness = []
+	maximmum = []
+	edges = G.number_of_edges()
+	while edges > 0:
+		current_max = max(nx.betweenness_centrality(G).items(), key=operator.itemgetter(1))[0]
+		maximmum.append(current_max)
+		G.remove_node(current_max)
+		edges = G.number_of_edges()
+
+	rows, colums = df.shape
+	feature = np.zeros(rows)
+	names = []
+	for value in range(len(maximmum)):
+		feature[maximmum[value]] = 1
+		names.append('Feature List' + str(value))
+		df[names[value]] = feature
+		feature = np.zeros(rows)
+
+	for i in range(len(names)):
+		COLS.append(names[i])
+
+	csvFile = open(root_path+"/cleaned_database.csv", 'w', encoding='utf-8')
+	df.to_csv(csvFile, mode='w', columns=COLS, index=False, encoding="utf-8")
+
+
+def k_medoids_method(file_request: ConvertRequest):
+	database = pd.read_csv(file_request.path+"/cleaned_database.csv", header=0)
+	database = database[database['Sentences'].notna()]
 	df = database.drop(['Sentences', 'Cleaned_Sentences'], axis=1)
-	kmedoids = KMedoids(n_clusters=5, random_state=0).fit(df)
-	#print(kmedoids.labels_)
-	#pred=kmedoids.predict([[0,0], [4,4]])
-	#print(kmedoids.cluster_centers_)
+	row, col = df.shape
+	clusters = int(row * int(file_request.portion) / 100)
+	print(clusters)
+	kmedoids = KMedoids(n_clusters=clusters, random_state=0).fit(df)
 	centers = pd.DataFrame(kmedoids.cluster_centers_, columns=df.columns)
-	#print (centers)
-	
-	#index=df.loc[kmedoids.cluster_centers_].index()
-	#print(kmedoids.inertia_)
 
-	output=database.loc[df['Position'].isin(centers['Position'])]
-	output_abstract='.'.join(output['Sentences'].to_list())
-	#print (output_abstract)
-
+	output = database.loc[df['Position'].isin(centers['Position'])]
+	output_abstract = '.'.join(output['Sentences'].to_list())
 	return output_abstract
-	
-def rouge_evaluation(file_request: ConvertRequest, output_abstract):
-	print("rouge_evaluation...")
-	# article = open(root_path+'/article.txt','r')
-	# file = article.readlines()
-	# article.close()
-	# contiguous_string = ''
-	# for text in file_request.fullText:
-	# 	contiguous_string += text.strip('\n')
-	# reference_abstract, body = contiguous_string.split('Introdução')
-	# reference_abstract, body = file_request.abs, file_request.body
-	print(file_request.abs)
 
-	rouge = Rouge()
-	scores = rouge.get_scores(output_abstract, file_request.abs)
-	print(scores)
 
-	print('Resumo')
-	print(output_abstract)
-	return output_abstract
+# print (output_abstract)
 
 def preprocessing(names_dict, root_path):
 	print("preprocessing...")
 	stemmer = nltk.stem.RSLPStemmer()
 	stop_words = set(stopwords.words('portuguese'))
-	
+
 	df = pd.read_csv(root_path+"/database.csv", header=0)
 
 	df["Cleaned_Sentences"] = df["Sentences"].str.lower()
-	df["Cleaned_Sentences"] = df["Cleaned_Sentences"].apply(lambda x:' '.join(remove_punctuation(word) for word in word_tokenize(str(x))))
-	df["Cleaned_Sentences"] = df["Cleaned_Sentences"].apply(lambda x:' '.join(word for word in word_tokenize(x) if word not in stop_words))
-	df["Cleaned_Sentences"] = df["Cleaned_Sentences"].apply(lambda x:' '.join(stemmer.stem(word) for word in word_tokenize(x) if not similarity(word, names_dict)))
+	df["Cleaned_Sentences"] = df["Cleaned_Sentences"].apply(
+		lambda x: ' '.join(remove_punctuation(word) for word in word_tokenize(str(x))))
+	df["Cleaned_Sentences"] = df["Cleaned_Sentences"].apply(
+		lambda x: ' '.join(word for word in word_tokenize(x) if word not in stop_words))
+	df["Cleaned_Sentences"] = df["Cleaned_Sentences"].apply(
+		lambda x: ' '.join(stemmer.stem(word) for word in word_tokenize(x) if not similarity(word, names_dict)))
 
 	COLS = ['Sentences', 'Cleaned_Sentences']
 	csvFile = open(root_path+"/cleaned_database.csv", 'w', encoding='utf-8')
@@ -324,14 +349,13 @@ def preprocessing(names_dict, root_path):
 	
 if __name__ == "__main__":
 	filename = 'artigo.pdf'
+	filename = 'artigo.pdf'
 	# pdf_txt_converter(filename)
 	# text_reading()
 	# names_dict = get_name_dict()
 	# preprocessing(names_dict)
 	# position_weighted_metric()
-	# tfidf_metric()
-	# tfidf_cossine_euclidean()
-	# #text_rank_method()
-	# brush_path()
-	# output = k_medoids_method()
+	# graph_methodology()
+	# portion = 50
+	# output = k_medoids_method(portion)
 	# rouge_evaluation(output)

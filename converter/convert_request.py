@@ -9,6 +9,7 @@ class ConvertRequest:
         self.abs = None
         self.body = None
         self.status = 0
+        self.portion = 0
 
     def getPDFName(self):
         return "{}.pdf".format(self.id)
@@ -62,13 +63,13 @@ class ConvertRequest:
 
     def loadStatus(self) -> int:
         with open("{}/{}_status.txt".format(self.path, self.id), 'r') as destination:
-            self.status = int(destination.read())
+            self.status = eval(destination.read())
             return self.status
 
     def saveStatus(self):
         with open("{}/{}_status.txt".format(self.path, self.id), 'w') as destination:
             destination.write(str(self.status))
 
-    def incrementStatus(self, hop: int):
+    def incrementStatus(self, hop):
         self.status += hop
         self.saveStatus()
