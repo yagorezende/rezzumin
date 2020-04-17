@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
         <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="#">Documentação</a>
         </div>
     </nav>
@@ -20,10 +20,11 @@
             <h2 class="text-center">Rezzumin</h2>
             <h5 class="text-center">Ferramenta para resumo de artigos acadêmicos e textos em geral</h5>
         </div>
-
+    </div>
+    <div class="container">
         <section id="upload-pdf">
             <h6 class="text-left">Upload PDF</h6>
-            <div>
+            <div class="text-center" style="margin: 0 30%;">
               {% csrf_token %}
               <div class="form-group">
                 <input type="file" id="pdf-file" name="pdf-file" hidden/>
@@ -42,10 +43,13 @@
                 </div>
               </div>
 
+            <div class="progress" id="progress-bar-wrapper" style="margin: 22px 0;">
+                <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0;">0%</div>
+            </div>
+
               <button id="pdf-upload-submit" class="btn btn-outline-dark">Submit</button>
             </div>
         </section>
-
     </div>
 
 

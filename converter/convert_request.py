@@ -8,6 +8,7 @@ class ConvertRequest:
         self.isPdf = False
         self.abs = None
         self.body = None
+        self.status = 0
 
     def getPDFName(self):
         return "{}.pdf".format(self.id)
@@ -55,3 +56,19 @@ class ConvertRequest:
     def saveAbs(self, abs):
         with open("{}/{}_abs.txt".format(self.path, self.id), 'w') as destination:
             destination.write(abs)
+
+    def getAbsPath(self) -> str:
+        return "{}/{}_abs.txt".format(self.path, self.id)
+
+    def loadStatus(self) -> int:
+        with open("{}/{}_status.txt".format(self.path, self.id), 'r') as destination:
+            self.status = int(destination.read())
+            return self.status
+
+    def saveStatus(self):
+        with open("{}/{}_status.txt".format(self.path, self.id), 'w') as destination:
+            destination.write(str(self.status))
+
+    def incrementStatus(self, hop: int):
+        self.status += hop
+        self.saveStatus()
