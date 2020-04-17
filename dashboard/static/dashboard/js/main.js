@@ -2,11 +2,31 @@ $(document).ready(function () {
     $('#pdf-spinner').hide();
     $('#progress-bar-wrapper').hide();
     setSliderListener();
+
+    $('#pdf-file').on("change", function(){
+        var file = $('#pdf-file')[0].files[0];
+        if(file.type !== "application/pdf"){
+            $('#upload-file-footer').html("arquivo: "+file.name+" não é um pdf válido!");
+            $('#pdf-upload-submit').addClass("btn-outline-danger");
+            $('#pdf-upload-submit').addClass("disabled");
+
+
+        }else{
+            $('#pdf-upload-submit').removeClass("btn-outline-danger");
+            $('#pdf-upload-submit').removeClass("disabled");
+            $('#upload-file-footer').html("arquivo: "+file.name);
+        }
+        console.log(file);
+    });
+
     $('#upload-pdf-btn').click(function () {
         $('#pdf-file').trigger('click');
         console.log("ready!");
-    });
 
+    });
+});
+
+function addUploadPdfAction() {
     $('#pdf-upload-submit').click(function () {
         $('#pdf-spinner').show("fast");
         $('#progress-bar-wrapper').show("fast");
@@ -46,7 +66,7 @@ $(document).ready(function () {
         });
         getStatus(rid.toUpperCase());
     });
-});
+}
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

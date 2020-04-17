@@ -1,3 +1,33 @@
+body{
+  background-color: #212121;
+  font-family: 'Roboto', serif;
+}
+
+h1, h2, h3, h4, h5, p{
+  font-family: 'Roboto', serif;
+}
+
+#upload-pdf::before,
+#upload-text::before {
+display: block;
+content: " ";
+margin-top: -65px;
+height: 65px;
+visibility: hidden;
+}
+
+.bg-dark{
+  background-color: #212121;
+}
+
+.bg-dark-medium{
+  background-color: #9E9E9E;
+}
+
+.light-text{
+  color: whitesmoke;
+}
+
 .slider {
   -webkit-appearance: none;
   width: 100%;
