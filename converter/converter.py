@@ -61,12 +61,13 @@ def pdf_txt_converter(file_request: ConvertRequest):
 		if i < 10: p = "0"+str(i)
 		else: p = str(i)
 		os.popen("tesseract "+ outputPath+"-"+p+".png "+file_request.path+"/texto-"+output+"-"+p+" -l por").read()
-		texto += open(file_request.path+"/texto-"+output+"-"+p+".txt").read()
+		with open(file_request.path+"/texto-"+output+"-"+p+".txt", 'r', encoding='utf-8') as txt_file:
+			texto += txt_file.read()
 		file_request.incrementStatus(step)
 
 	os.popen("rm -rf "+outputPath+"*").read()
 	os.popen("rm -rf "+file_request.path+"/texto-"+output+"-*").read()
-	open(outputFile, "w").write(texto)
+	open(outputFile, "w", encoding='utf-8').write(texto)
 	return texto
 
 def text_reading(file_request: ConvertRequest):
@@ -90,7 +91,7 @@ def text_reading(file_request: ConvertRequest):
 	sentences = body.split('.')
 	COLS = ['Sentences']
 	database = pd.DataFrame(sentences,columns=COLS)
-	csvFile = open(file_request.path+"/database.csv", 'w' ,encoding='utf-8')
+	csvFile = open(file_request.path+"/database.csv", 'w' , encoding='utf-8')
 	database.to_csv(csvFile, mode='w', columns=COLS, index=False, encoding="utf-8")
 
 
