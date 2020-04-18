@@ -49,7 +49,7 @@ class ConvertRequest:
     def savePDFFile(self) -> bool:
         if self.pdfFile is None:
             return False
-        with open(self.getPDFLocation(), 'wb+', encoding='utf-8') as destination:
+        with open(self.getPDFLocation(), 'wb+') as destination:
             for chunk in self.pdfFile.chunks():
                 destination.write(chunk)
         return True
