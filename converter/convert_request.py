@@ -49,25 +49,25 @@ class ConvertRequest:
     def savePDFFile(self) -> bool:
         if self.pdfFile is None:
             return False
-        with open(self.getPDFLocation(), 'wb+') as destination:
+        with open(self.getPDFLocation(), 'wb+', encoding='utf-8') as destination:
             for chunk in self.pdfFile.chunks():
                 destination.write(chunk)
         return True
 
     def saveAbs(self, abs):
-        with open("{}/{}_abs.txt".format(self.path, self.id), 'w') as destination:
+        with open("{}/{}_abs.txt".format(self.path, self.id), 'w', encoding='utf-8') as destination:
             destination.write(abs)
 
     def getAbsPath(self) -> str:
         return "{}/{}_abs.txt".format(self.path, self.id)
 
     def loadStatus(self) -> int:
-        with open("{}/{}_status.txt".format(self.path, self.id), 'r') as destination:
+        with open("{}/{}_status.txt".format(self.path, self.id), 'r', encoding='utf-8') as destination:
             self.status = eval(destination.read())
             return self.status
 
     def saveStatus(self):
-        with open("{}/{}_status.txt".format(self.path, self.id), 'w') as destination:
+        with open("{}/{}_status.txt".format(self.path, self.id), 'w', encoding='utf-8') as destination:
             destination.write(str(self.status))
 
     def incrementStatus(self, hop):
