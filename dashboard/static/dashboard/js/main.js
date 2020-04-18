@@ -44,6 +44,46 @@ $(document).ready(function () {
         console.log(file);
     });
 
+    $('#text-upload-submit').click(function () {
+        $('#text-spinner').show("fast");
+        $('#progress-text-bar-wrapper').show("fast");
+        $('#text-field').hide("slow");
+        $('#upload-text-slider').hide("slow");
+        $('#text-upload-submit').hide("slow");
+
+        var rid = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 10);
+
+        console.log(rid.toUpperCase());
+        console.log("ready to submit text!");
+
+        var formData = new FormData();
+        formData.append('percent', $('#text-coverage-slider').val());
+        formData.append('text', $('#text-field').val());
+        formData.append('rid', rid.toUpperCase());
+        formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
+
+        jQuery.ajax({
+            url: '/process_text',
+            type: 'post',
+            enctype: 'multipart/form-data',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response){
+                if(response !== 0){
+                    // answer = jQuery.parseJSON(response);
+                    if(response.result != null){
+                        window.location.replace("/result?id="+response.result);
+                    }
+                }
+                else{
+                    alert('Problemas ao fazer o resumo, por favor tente outra vez');
+                }
+            },
+        });
+        getStatus(rid.toUpperCase(), false);
+    });
+
     $('#upload-pdf-btn').click(function () {
         $('#pdf-file').trigger('click');
         console.log("ready!");
@@ -64,6 +104,7 @@ function copyToClipboard() {
 function addUploadPdfAction() {
     $('#pdf-upload-submit').click(function () {
         $('#pdf-spinner').show("fast");
+
         $('#progress-bar-wrapper').show("fast");
         $('#upload-btn').hide("slow");
         $('#pdf-upload-submit').hide("slow");
@@ -99,7 +140,7 @@ function addUploadPdfAction() {
                 }
             },
         });
-        getStatus(rid.toUpperCase());
+        getStatus(rid.toUpperCase(), true);
     });
 }
 
@@ -107,17 +148,32 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function getStatus(id) {
+var spinner = null;
+var progressbar = null;
+var progressbar_label = null;
+
+
+async function getStatus(id, isPdf) {
     i = 0;
     var oldColor = "text-warning";
+
+    if(isPdf == true){
+        spinner = $("#pdf-spinner");
+        progressbar = $("#progress-bar");
+        progressbar_label = $("#progress-bar-label");
+    }else{
+        spinner = $("#text-spinner");
+        progressbar = $("#progress-text-bar");
+        progressbar_label = $("#progress-text-bar-label");
+    }
 
     while(i < 100){
         var phrase = PHRASES[Math.floor(Math.random() * PHRASES.length)];
         var newColor = COLORS[Math.floor(Math.random() * COLORS.length)];
 
-        $("#progress-bar-label").html(phrase);
-        $("#pdf-spinner").removeClass(oldColor);
-        $("#pdf-spinner").addClass(newColor);
+        progressbar_label.html(phrase);
+        spinner.removeClass(oldColor);
+        spinner.addClass(newColor);
         oldColor = newColor;
 
         await timeout(10000);
@@ -130,8 +186,8 @@ async function getStatus(id) {
             success: function(response){
                 if(response !== 0){
                     console.log(response.status+"%");
-                    $('#progress-bar').css("width", response.status+"%");
-                    $('#progress-bar').html(response.status+"%");
+                    progressbar.css("width", response.status+"%");
+                    progressbar.html(response.status+"%");
 
                     i = response.status;
                     // if(response.answer !== 200) i = 100;
@@ -148,10 +204,16 @@ async function getStatus(id) {
 function setSliderListener() {
     // Display the default slider value
     $("#file-coverage-output").html($("#file-coverage-slider").val() + "%");
+    $("#text-coverage-output").html($("#text-coverage-slider").val() + "%");
 
     // Update the current slider value (each time you drag the slider handle)
     $(document).on('change', '#file-coverage-slider', function() {
         $('#file-coverage-output').html( $(this).val() + "%");
+    });
+
+    // Update the current slider value (each time you drag the slider handle)
+    $(document).on('change', '#text-coverage-slider', function() {
+        $('#text-coverage-output').html( $(this).val() + "%");
     });
 }
 

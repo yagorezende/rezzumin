@@ -17,7 +17,6 @@ def process(request):
         "result": None
     }
     if request.method == 'POST':
-        print("Here 2!")
         rid = request.POST.get("rid")
         file_request = __handle_uploaded_file(request.FILES['file'], rid)
         file_request.portion = int(request.POST.get("percent"))
@@ -28,13 +27,20 @@ def process(request):
     return JsonResponse(response)
 
 def process_text(request):
+    print("Process Text!")
     response = {
         "answer": 200,
         "result": None
     }
 
     if request.method == 'POST':
-        print("Here 2!")
+        rid = request.POST.get("rid")
+        file_request = ConvertRequest(rid, settings.MEDIA_DIR[0])
+        file_request.portion = int(request.POST.get("percent"))
+        file_request.body = request.POST.get("text")
+        file_request.saveStatus()
+        file_request.saveAbs(__digest(file_request))
+        response["result"] = file_request.id
 
     return JsonResponse(response)
 
@@ -57,7 +63,9 @@ def __handle_uploaded_file(f, rid) -> ConvertRequest:
     fileRequest = ConvertRequest(rid, settings.MEDIA_DIR[0])
     fileRequest.pdfFile = f
     fileRequest.isSaved = fileRequest.savePDFFile()
+    fileRequest.isPdf = True
     return fileRequest
+
 
 def get_status(request):
     id = request.GET.get("id")
@@ -69,20 +77,14 @@ def get_status(request):
 
 
 def __digest(file_request: ConvertRequest):
-    # text_reading()
-    # names_dict = get_name_dict()
-    # preprocessing(names_dict)
-    # position_weighted_metric()
-    # graph_methodology()
-    # portion = 50
-    # output = k_medoids_method(portion)
-    # rouge_evaluation(output)
+    if file_request.isPdf:
+        file_request.fullText = pdf_txt_converter(file_request)  #+10%
+        file_request.status = 30
 
-    file_request.fullText = pdf_txt_converter(file_request)  #+10%
-    file_request.status = 30
-
-    file_request.cleanupText()  #+10%
-    file_request.incrementStatus(10)
+        file_request.cleanupText()  #+10%
+        file_request.incrementStatus(10)
+    else:
+        file_request.status = 30
 
     text_reading(file_request)  #+10%
     file_request.incrementStatus(10)
