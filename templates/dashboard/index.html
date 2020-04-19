@@ -40,15 +40,10 @@
             <div class="col-5">
                 <h1 class="mb-3">Rezzumin</h1>
                 <p class="lead mb-4 text-justify">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor mi at rhoncus molestie.
-                    Ut et maximus diam. Integer eget libero at leo aliquam condimentum sit amet ut elit.
-                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                    Pellentesque lacinia non dolor sed efficitur.
+                    Apresentamos a Rezzumin, uma ferramenta open-source educacional desenvolvida para identificar e resumir ideias e fatos mais importantes dos seus textos. A Rezzumin aceita tanto textos simples como aqueles em formato PDF, incluindo artigos científicos da SBC – Sociedade Brasileira de Computação.
                 </p>
                 <p class="lead mb-4 text-justify">
-                    Vivamus scelerisque, erat vitae lobortis consectetur,
-                    dui purus ultrices elit, quis condimentum elit purus eget felis. Vestibulum finibus,
-                    leo vel facilisis euismod, magna urna aliquam est, et finibus sapien ligula ac arcu.
+                    O processo de sumarização da Rezzumin traz uma funcionalidade que permite ao usuário editar o tamanho do resumo a ser gerado em comparação com o texto original de entrada. Lembramos que esta é uma ferramenta de suporte, focada somente na produção de resumos extrativos, não podendo substituir um resumo abstrativo feito por um humano.
                 </p>
                 <div class="row mx-n2">
                     <div class="col-md px-2">
@@ -121,13 +116,6 @@
 
      <section id="upload-pdf">
          <div class="dropdown-divider mb-lg-5 mt-lg-5"></div>
-{#        <div class="container">#}
-{#            <div style="padding: 38px 0;">#}
-{#                <h1 class="text-center mb-3 text-light">Resumir PDF</h1>#}
-{#                <h5 class="text-center mb-4 text-light">Carreque um arquivo PDF para que possa ser feito o resumo</h5>#}
-{#                <div class="dropdown-divider"></div>#}
-{#            </div>#}
-{#        </div>#}
         <div class="container-fluid mt-4">
             <div class="pt-lg-5 pb-lg-5">
                 <h1 class="text-center mb-3 text-light">Resumir PDF</h1>
@@ -154,8 +142,8 @@
                     <small class="form-text text-muted" id="file-coverage-output">15%</small>
                   </div>
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="customCheck1">
-                      <label class="custom-control-label light-text" for="customCheck1">Artigo SBC</label>
+                      <input type="checkbox" class="custom-control-input" id="sbc-checkbox">
+                      <label class="custom-control-label light-text" for="sbc-checkbox">Artigo SBC</label>
                     </div>
 
                 </div>
@@ -173,18 +161,18 @@
                 <div class="col-1"></div>
                 <div class="col-5">
                     <p class="lead mb-4 text-justify text-light">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor mi at rhoncus molestie.
-                        Ut et maximus diam. Integer eget libero at leo aliquam condimentum sit amet ut elit.
-                        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                        Pellentesque lacinia non dolor sed efficitur.
+                        <svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Ao optar por resumir um artigo da SBC, a ferramenta automaticamente seleciona o cerne do artigo, desconsiderando do resumo gerado textos que estiverem antes da introdução, como resumo em inglês, título e informações sobre os autores além da seção de referências.
                     </p>
                 </div>
                 <div class="col-5">
                     <p class="lead mb-4 text-justify text-light">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor mi at rhoncus molestie.
-                        Ut et maximus diam. Integer eget libero at leo aliquam condimentum sit amet ut elit.
-                        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-                        Pellentesque lacinia non dolor sed efficitur.
+                        <svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Ao optar por resumir um artigo da SBC, a ferramenta automaticamente seleciona o cerne do artigo, desconsiderando do resumo gerado textos que estiverem antes da introdução, como resumo em inglês, título e informações sobre os autores além da seção de referências.
                     </p>
                 </div>
                 <div class="col-1"></div>

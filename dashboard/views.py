@@ -22,6 +22,8 @@ def process(request):
         rid = request.POST.get("rid")
         file_request = __handle_uploaded_file(request.FILES['file'], rid)
         file_request.portion = int(request.POST.get("percent"))
+        file_request.isSBC = request.POST.get("sbc") == "true"
+        print("is SBC: ", file_request.isSBC)
         file_request.saveStatus()
         if file_request.isSaved:
             file_request.saveAbs(__digest(file_request))
@@ -83,7 +85,10 @@ def __digest(file_request: ConvertRequest):
         file_request.fullText = pdf_txt_converter(file_request)  #+10%
         file_request.status = 30
 
-        file_request.cleanupText()  #+10%
+        if file_request.isSBC:
+            file_request.cleanupText()  #+10%
+        else:
+            file_request.body = file_request.fullText
         file_request.incrementStatus(10)
     else:
         file_request.status = 30

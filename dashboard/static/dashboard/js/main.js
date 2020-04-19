@@ -118,6 +118,7 @@ function addUploadPdfAction() {
         formData.append('file', file);
         formData.append('rid', rid.toUpperCase());
         formData.append('percent', $('#file-coverage-slider').val());
+        formData.append('sbc', $('#sbc-checkbox:checkbox:checked').length > 0);
         formData.append('csrfmiddlewaretoken', document.getElementsByName('csrfmiddlewaretoken')[0].value);
         console.log("Here!");
 

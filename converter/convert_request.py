@@ -6,6 +6,7 @@ class ConvertRequest:
         self.fullText = None
         self.isSaved = False
         self.isPdf = False
+        self.isSBC = False
         self.abs = None
         self.body = None
         self.status = 0
@@ -34,10 +35,12 @@ class ConvertRequest:
         # print("res_init:{} res_end:{}".format(res_init, res_end))
         # print("res = " + self.fullText[res_init:res_end])
 
+        body_end = self.fullText.find("\nReferências\n")
+
         if res_end > ab_end:
-            self.body = self.fullText[res_end:]
+            self.body = self.fullText[res_end:body_end]
         else:
-            self.body = self.fullText[ab_end:]
+            self.body = self.fullText[ab_end:body_end]
         self.abs = self.fullText[res_init:res_end]
 
         # remove line breaks
