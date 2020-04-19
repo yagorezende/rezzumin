@@ -1,6 +1,5 @@
-# encoding: utf-8
-# -*- coding: cp1252 -*-.
 #!/usr/bin/python
+# -*- coding: UTF-8 -*-
 
 import sys
 import os
@@ -58,7 +57,7 @@ def pdf_txt_converter(file_request: ConvertRequest):
 	texto = ""
 
 	for i in range (1,pages+1):
-		if i < 10: p = "0"+str(i)
+		if pages > 9 and i < 10: p = "0"+str(i)
 		else: p = str(i)
 		os.popen("tesseract "+ outputPath+"-"+p+".png "+file_request.path+"/texto-"+output+"-"+p+" -l por").read()
 		with open(file_request.path+"/texto-"+output+"-"+p+".txt", 'r', encoding='utf-8') as txt_file:
@@ -82,15 +81,17 @@ def text_reading(file_request: ConvertRequest):
 	# abstract, body = contiguous_string.split('Introdução')
 	abstract, body = file_request.abs, file_request.body
 
-	'''
-	print('Abstract: \n')
-	print (abstract)
-	print('Body: \n')
-	print (body)
-	'''
+	
+	#print('Abstract: \n')
+	#print (abstract)
+	#print('Body: \n')
+	#print (body)
+	
 	sentences = body.split('.')
 	COLS = ['Sentences']
 	database = pd.DataFrame(sentences,columns=COLS)
+	#print ("Text Reading")
+	#print (database.to_string())
 	csvFile = open(file_request.path+"/database.csv", 'w' , encoding='utf-8')
 	database.to_csv(csvFile, mode='w', columns=COLS, index=False, encoding="utf-8")
 
@@ -126,7 +127,7 @@ def get_name_dict(root_path):
 
 def position_weighted_metric(root_path):
 	print("position_weighted_metric...")
-	df = pd.read_csv(root_path+"/cleaned_database.csv", header=0)
+	df = pd.read_csv(root_path+"/cleaned_database.csv", header=0, encoding="utf-8")
 	tfidf_vectorizer = TfidfVectorizer(ngram_range=(1, 1))
 	count_vectorizer = CountVectorizer(ngram_range=(1, 1))
 	tfidf_matrix = tfidf_vectorizer.fit_transform(df["Cleaned_Sentences"].values.astype('U')).todense()
@@ -146,7 +147,8 @@ def position_weighted_metric(root_path):
 
 def tfidf_metric(root_path):
 	print("tfidf_metric...")
-	df = pd.read_csv(root_path+"/cleaned_database.csv", header=0)
+	df = pd.read_csv(root_path+"/cleaned_database.csv", header=0, encoding="utf-8")
+	#print(df.to_string())
 	tfidf_vectorizer = TfidfVectorizer(ngram_range=(1,1))
 	count_vectorizer = CountVectorizer(ngram_range=(1,1))
 	tfidf_matrix=tfidf_vectorizer.fit_transform(df["Cleaned_Sentences"].values.astype('U')).todense()
@@ -319,6 +321,7 @@ def k_medoids_method(file_request: ConvertRequest):
 	row, col = df.shape
 	clusters = int(row * int(file_request.portion) / 100)
 	print(clusters)
+	if not clusters : clusters+= 1
 	kmedoids = KMedoids(n_clusters=clusters, random_state=0).fit(df)
 	centers = pd.DataFrame(kmedoids.cluster_centers_, columns=df.columns)
 
@@ -334,8 +337,9 @@ def preprocessing(names_dict, root_path):
 	stemmer = nltk.stem.RSLPStemmer()
 	stop_words = set(stopwords.words('portuguese'))
 
-	df = pd.read_csv(root_path+"/database.csv", header=0)
+	df = pd.read_csv(root_path+"/database.csv", header=0, encoding="utf-8")
 
+	print(df.to_string())
 	df["Cleaned_Sentences"] = df["Sentences"].str.lower()
 	df["Cleaned_Sentences"] = df["Cleaned_Sentences"].apply(
 		lambda x: ' '.join(remove_punctuation(word) for word in word_tokenize(str(x))))

@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 """
 Django settings for rezzumin project.
 

@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from converter.convert_request import ConvertRequest
@@ -50,7 +52,7 @@ def result(request):
     file_request = ConvertRequest(id, settings.MEDIA_DIR[0])
     context = {"abstract": None}
 
-    with open(file_request.getAbsPath(), 'r') as abs_file:
+    with open(file_request.getAbsPath(), 'r', encoding='utf8') as abs_file:
         context["abstract"] = abs_file.read()
 
     return render(request, 'dashboard/result.html', context)
