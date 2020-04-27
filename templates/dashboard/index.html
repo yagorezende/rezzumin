@@ -29,7 +29,8 @@
                 </div>
               </li>
             <a class="nav-item nav-link" href="#tutorial">Tutorial</a>
-            <a class="nav-item nav-link" target="_blank" href="https://github.com/diogoferrazani/rezzumin">Documentação</a>
+            <a class="nav-item nav-link" href="#archtecture">Arquitetura</a>
+            <a class="nav-item nav-link" target="_blank" href="https://github.com/yagorezende/rezzumin">Documentação</a>
             <a class="nav-item nav-link" target="_blank" href="https://www.midiacom.uff.br">Midiacom</a>
         </div>
     </nav>
@@ -61,19 +62,7 @@
     </div>
 
     <section id="tutorial">
-        <div class="pt-lg-5 pb-lg-5">
-            <h1 class="text-center mt-5 mb-3 text-light">Vídeo Demonstrativo</h1>
-            <h5 class="text-center mb-4 text-light">Entenda melhor o funcionamento do nosso trabalho com um vídeo demonstrativo</h5>
-            <div class="dropdown-divider m-auto w-25"></div>
-        </div>
-
-        <div class="embed-responsive embed-responsive-16by9">
-{#          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>#}
-          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/WosYkrvw9fs" allowfullscreen></iframe>
-        </div>
-
-        <div class="container-fluid">
-            <div class="dropdown-divider mb-lg-5 mt-lg-5"></div>
+        <div class="container-fluid mb-lg-5">
             <div class="pt-lg-5 pb-lg-5">
                 <h1 class="text-center mb-3 text-light">Conheça Nossas Funcionalidades</h1>
                 <h5 class="text-center mb-4 text-light">Artigo, PDF ou texto livre, veja abaixo as diferentes formas de produzir um resumo com Rezzumin.</h5>
@@ -113,6 +102,49 @@
                 </div>
             </div>
         </div>
+
+        <div class="dropdown-divider mb-lg-5 mt-lg-5"></div>
+        <div class="pb-lg-5">
+            <h1 class="text-center mt-5 mb-3 text-light">Vídeo Demonstrativo</h1>
+            <h5 class="text-center mb-4 text-light">Entenda melhor o funcionamento do nosso trabalho com um vídeo demonstrativo</h5>
+            <div class="dropdown-divider m-auto w-25"></div>
+        </div>
+
+        <div class="embed-responsive embed-responsive-16by9">
+{#          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>#}
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/WosYkrvw9fs" allowfullscreen></iframe>
+        </div>
+    </section>
+    <section id="archtecture" class="bg-light">
+        <div class="pt-lg-5 pb-lg-5">
+            <h1 class="text-center mt-5 mb-3">Nossa Arquitetura</h1>
+            <h5 class="text-center mb-4 ">Entenda melhor o funcionamento da nossa arquitetura com um vídeo demonstrativo</h5>
+            <div class="dropdown-divider m-auto w-25"></div>
+        </div>
+
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/JnGpvHweXsw" allowfullscreen></iframe>
+        </div>
+
+        <div class="pt-lg-5 pb-lg-5">
+            <h1 class="text-center mt-5 mb-3">Saiba mais</h1>
+            <div class="dropdown-divider m-auto w-25"></div>
+        </div>
+        <div class="row pb-lg-5">
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <p class="lead mb-4 text-justify">
+                        A arquitetura da Rezzumin é modular e coesa, focando atualmente na língua portuguesa. O módulo de Interface Web é implementado sobre um servidor Apache, executando o módulo Django para suportar aplicações Python. O módulo de Arquivo converte arquivos PDF submetidos pelo usuário em texto plano, através do tesseract, um aplicativo de reconhecimento óptico de caracteres (OCR). Assim, a leitura do arquivo depende do reconhecimento óptico do texto. O módulo de Texto Não Formatado inicia o processamento de texto, seja vindo do OCR, seja vindo diretamente através da interface web. O módulo de Processamento de Linguagem Natural (NLP) é responsável pelo pré-processamento dos dados.
+                    </p>
+                </div>
+                <div class="col-5">
+                    <p class="lead mb-4 text-justify">
+                        Este módulo executa as tarefas de limpeza e adequação dos dados textuais, fundamental para alimentar o módulo de Vetorização. A vetorização leva as palavras do texto para um espaço vetorial cuja dimensionalidade é igual ao número de palavras restantes após os processos de limpeza e adequação. Com os dados vetorizados, o módulo de Extração de Características converte os vetores de palavras em características úteis, que são tratadas pelos dois módulos seguintes de Grafo de Frases e Aprendizado de Máquina. Tais módulos aplicam procedimentos próprios que identificam e selecionam as frases mais importantes do texto inserido. Por fim, os resultados são reunidos no módulo de Composição do Resumo Final e o resultado é retornado para a interface web.
+                    </p>
+                </div>
+                <div class="col-1"></div>
+            </div>
+
     </section>
 
      <section id="upload-pdf">
